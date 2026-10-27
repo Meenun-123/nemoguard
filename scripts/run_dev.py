@@ -2,7 +2,7 @@
 """
 Dual-mode local development server for NemoGuard.
 - Uses Uvicorn + FastAPI if installed.
-- Gracefully falls back to Python standard library HTTP/SSE server if FastAPI is not yet installed.
+- Gracefully falls back to Python standard library ThreadingHTTPServer if FastAPI is not yet installed.
 """
 import sys
 import os
@@ -10,7 +10,7 @@ import json
 import uuid
 import time
 from pathlib import Path
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +21,7 @@ from ai.agent import NemoGuardAgent
 from ai.model_client import MockModelClient
 
 class StandaloneHandler(SimpleHTTPRequestHandler):
-    """Zero-dependency HTTP and SSE server handler."""
+    """Zero-dependency multi-threaded HTTP and SSE server handler."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT_DIR / "apps" / "web"), **kwargs)
@@ -30,7 +30,12 @@ class StandaloneHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
 
-        if path == "/api/v1/health":
+        if path == "/favicon.ico":
+            self.send_response(204)
+            self.end_headers()
+            return
+
+        elif path == "/api/v1/health":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -135,8 +140,8 @@ def main():
         )
     except ImportError:
         print("[*] FastAPI/Uvicorn not installed yet.")
-        print(f"[*] Starting built-in lightweight server on port {settings.api_port}...")
-        httpd = HTTPServer((settings.api_host, settings.api_port), StandaloneHandler)
+        print(f"[*] Starting built-in lightweight multi-threaded server on port {settings.api_port}...")
+        httpd = ThreadingHTTPServer((settings.api_host, settings.api_port), StandaloneHandler)
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

@@ -1,5 +1,8 @@
 from typing import Optional, List, Dict, Any, Literal
-from datetime import datetime
+from datetime import datetime, timezone
+
+def get_utc_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 try:
     from pydantic import BaseModel, Field
@@ -22,7 +25,7 @@ try:
         event_type: str
         message: str
         data: Optional[Dict[str, Any]] = None
-        timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+        timestamp: str = Field(default_factory=get_utc_iso)
 
     class HealthResponse(BaseModel):
         status: str
@@ -61,7 +64,7 @@ except ImportError:
         event_type: str
         message: str
         data: Optional[Dict[str, Any]] = None
-        timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+        timestamp: str = field(default_factory=get_utc_iso)
 
         def dict(self):
             return asdict(self)

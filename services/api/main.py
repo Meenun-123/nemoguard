@@ -24,7 +24,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Health Check Endpoint
+# Health Check Endpoints (Supports both /health and /api/v1/health)
+@app.get("/health", response_model=HealthResponse)
 @app.get("/api/v1/health", response_model=HealthResponse)
 async def health_check():
     return HealthResponse(

@@ -35,7 +35,7 @@ class StandaloneHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             return
 
-        elif path == "/api/v1/health":
+        elif path == "/api/v1/health" or path == "/health":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")

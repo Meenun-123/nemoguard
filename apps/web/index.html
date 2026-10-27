@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NemoGuard | Autonomous Agentic Vulnerability Remediation</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="logo-group">
+      <span class="logo-icon">🛡️</span>
+      <div>
+        <h1>NemoGuard</h1>
+        <p class="subtitle">Autonomous Agentic Remediation & Verification Engine</p>
+      </div>
+    </div>
+    <div class="header-badges">
+      <span class="badge badge-nvidia">NVIDIA Nemotron 70B</span>
+      <span class="badge badge-nebius">Nebius Token Factory</span>
+      <span id="mode-badge" class="badge badge-mode">Checking Mode...</span>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    <!-- Left Column: Code Input & Controls -->
+    <section class="panel input-panel">
+      <div class="panel-header">
+        <h2>Target Vulnerability</h2>
+        <div class="presets">
+          <label>Sample:</label>
+          <select id="preset-selector">
+            <option value="sql_injection">SQL Injection (OWASP A03)</option>
+            <option value="eval_rce">Unsafe eval() RCE</option>
+            <option value="shell_injection">Shell Command Injection</option>
+            <option value="api_key">Hardcoded Secret</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="editor-container">
+        <textarea id="code-input" spellcheck="false" placeholder="Paste vulnerable Python code here..."></textarea>
+      </div>
+
+      <div class="task-options">
+        <div class="option-row">
+          <label for="task-desc">Agent Instructions:</label>
+          <input type="text" id="task-desc" value="Audit security flaws, synthesize reproduction test, and generate verified patch.">
+        </div>
+        <div class="option-row checkboxes">
+          <label><input type="checkbox" id="auto-verify" checked> Run Sandbox Verification</label>
+          <span class="hw-note">Local Hardware: 8GB VRAM Safe (0% GPU pressure)</span>
+        </div>
+      </div>
+
+      <button id="run-btn" class="btn btn-primary">
+        <span class="btn-icon">⚡</span> Run NemoGuard Agent
+      </button>
+    </section>
+
+    <!-- Right Column: Live Reasoning, Patch, and Verification -->
+    <section class="panel output-panel">
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="timeline-tab">Agent Trajectory</button>
+        <button class="tab-btn" data-tab="patch-tab">Verified Patch Diff</button>
+        <button class="tab-btn" data-tab="verification-tab">Verification Proof</button>
+        <button class="tab-btn" data-tab="telemetry-tab">Nebius Telemetry</button>
+      </div>
+
+      <!-- Tab Content: Timeline -->
+      <div id="timeline-tab" class="tab-content active">
+        <div id="timeline-stream" class="timeline-stream">
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <p>Ready to analyze. Click <strong>"Run NemoGuard Agent"</strong> to stream real-time NVIDIA Nemotron 70B reasoning.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Patch Diff -->
+      <div id="patch-tab" class="tab-content">
+        <div id="diff-container" class="diff-container">
+          <div class="empty-state">
+            <p>No patch generated yet. Start an analysis to view unified diff.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Verification -->
+      <div id="verification-tab" class="tab-content">
+        <div id="verification-card" class="verification-card">
+          <div class="empty-state">
+            <p>No verification run yet. Sandboxed assertions will appear here.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Telemetry -->
+      <div id="telemetry-tab" class="tab-content">
+        <div class="telemetry-grid">
+          <div class="telemetry-card">
+            <h3>NVIDIA Model</h3>
+            <p id="tel-model">nvidia/Llama-3.1-Nemotron-70B-Instruct-HF</p>
+          </div>
+          <div class="telemetry-card">
+            <h3>Infrastructure</h3>
+            <p id="tel-infra">Nebius Token Factory</p>
+          </div>
+          <div class="telemetry-card">
+            <h3>Tokens Processed</h3>
+            <p id="tel-tokens">0 tokens</p>
+          </div>
+          <div class="telemetry-card">
+            <h3>End-to-End Latency</h3>
+            <p id="tel-latency">0.00s</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

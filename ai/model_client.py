@@ -123,32 +123,45 @@ class MockModelClient(BaseModelClient):
         max_tokens: int = 1500
     ) -> Dict[str, Any]:
         start_time = time.time()
-        last_message = messages[-1]["content"] if messages else ""
+        num_turns = len(messages)
 
-        # Determine step in ReAct reasoning chain
-        if "reproduction_test" in last_message.lower():
-            mock_content = json.dumps({
-                "action": "run_sandbox_test",
-                "action_input": {
-                    "test_code": "def test_exploit():\n    assert process_user({'id': '1 OR 1=1'}) != 'ALL_DATA'"
-                },
-                "thought": "Synthesizing an automated reproduction test to confirm vulnerability."
-            })
-        elif "tool_result" in last_message.lower():
-            mock_content = json.dumps({
-                "action": "generate_patch",
-                "action_input": {
-                    "file_path": "target.py",
-                    "explanation": "Replaced string concatenation SQL query with parameterized query execution to prevent SQL injection.",
-                    "diff": "--- target.py\n+++ target.py\n@@ -2,3 +2,3 @@\n-    query = f'SELECT * FROM users WHERE id = {data[\"id\"]}'\n-    return db.execute(query)\n+    query = 'SELECT * FROM users WHERE id = ?'\n+    return db.execute(query, (data['id'],))"
-                },
-                "thought": "Security scanner identified SQL injection vulnerability. Synthesizing parameterized patch."
-            })
-        else:
+        # Progression through the ReAct reasoning cycle based on message history
+        if num_turns <= 2:
+            # Turn 1: Initial scan
             mock_content = json.dumps({
                 "action": "run_security_scanner",
                 "action_input": {"rule_set": "owasp_top_10"},
                 "thought": "Analyzing source AST for security vulnerabilities, injection risks, and sanitization flaws."
+            })
+        elif num_turns <= 4:
+            # Turn 2: Reproduction test
+            mock_content = json.dumps({
+                "action": "run_sandbox_test",
+                "action_input": {
+                    "test_code": "def test_reproduction():\n    # Verify exploit mitigation\n    assert True\n\ntest_reproduction()"
+                },
+                "thought": "Security scan detected vulnerability. Synthesizing automated reproduction test to verify the exploit condition."
+            })
+        elif num_turns <= 6:
+            # Turn 3: Patch generation
+            mock_content = json.dumps({
+                "action": "generate_patch",
+                "action_input": {
+                    "file_path": "remediated.py",
+                    "explanation": "Replaced string-formatted dynamic SQL query with parameterized placeholder syntax to eliminate SQL injection vulnerabilities.",
+                    "diff": "--- original.py\n+++ remediated.py\n@@ -2,3 +2,3 @@\n-    query = f\"SELECT * FROM users WHERE username = '{user_input}' AND active = 1\"\n-    cursor.execute(query)\n+    query = \"SELECT * FROM users WHERE username = ? AND active = 1\"\n+    cursor.execute(query, (user_input,))"
+                },
+                "thought": "Vulnerability confirmed. Synthesizing minimal, verified patch with parameterized query execution to remediate the flaw."
+            })
+        else:
+            # Turn 4: Final verification and finish
+            mock_content = json.dumps({
+                "action": "finish",
+                "action_input": {
+                    "summary": "Remediated vulnerability with parameterized query binding. Sandbox test verified clean.",
+                    "confidence_score": 0.99
+                },
+                "thought": "Remediation verified: code compiles cleanly, all security tests pass, and AST scanner reports clean status."
             })
 
         latency = round(time.time() - start_time + 0.05, 3)

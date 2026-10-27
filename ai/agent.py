@@ -96,6 +96,7 @@ class NemoGuardAgent:
             action_input = parsed.get("action_input", {})
 
             emit("THOUGHT", thought, {"step": step, "model": res.get("model")})
+            time.sleep(0.3)
 
             # 2. Execute selected tool action
             if action == "run_security_scanner":

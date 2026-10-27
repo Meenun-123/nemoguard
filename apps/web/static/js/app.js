@@ -137,6 +137,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (evt.event_type === "COMPLETED" && evt.data) {
       document.getElementById("tel-tokens").textContent = `${evt.data.total_tokens} tokens`;
       document.getElementById("tel-latency").textContent = `${evt.data.elapsed_seconds}s`;
+
+      // Add completion checkmarks on tabs
+      const patchTabBtn = document.querySelector('[data-tab="patch-tab"]');
+      if (patchTabBtn && !patchTabBtn.innerHTML.includes("✓")) {
+        patchTabBtn.innerHTML = `Verified Patch Diff <span style="color: #3fb950; font-weight: bold;">✓</span>`;
+      }
+      const verifTabBtn = document.querySelector('[data-tab="verification-tab"]');
+      if (verifTabBtn && !verifTabBtn.innerHTML.includes("✓")) {
+        verifTabBtn.innerHTML = `Verification Proof <span style="color: #3fb950; font-weight: bold;">✓</span>`;
+      }
     }
   }
 

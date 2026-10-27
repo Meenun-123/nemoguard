@@ -5,38 +5,108 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NemoGuard | Autonomous Agentic Vulnerability Remediation</title>
   <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Header -->
   <header class="app-header">
     <div class="logo-group">
-      <span class="logo-icon">🛡️</span>
+      <div class="shield-container">
+        <span class="logo-icon">🛡️</span>
+        <div class="pulse-ring"></div>
+      </div>
       <div>
-        <h1>NemoGuard</h1>
+        <div class="brand-row">
+          <h1>NemoGuard</h1>
+          <span class="version-tag">v1.2.0 • Pro</span>
+        </div>
         <p class="subtitle">Autonomous Agentic Remediation & Verification Engine</p>
       </div>
     </div>
     <div class="header-badges">
-      <span class="badge badge-nvidia">NVIDIA Nemotron 70B</span>
-      <span class="badge badge-nebius">Nebius Token Factory</span>
-      <span id="mode-badge" class="badge badge-mode">Checking Mode...</span>
+      <div class="badge badge-nvidia">
+        <span class="status-dot dot-nvidia"></span>
+        <span>NVIDIA Nemotron 70B</span>
+      </div>
+      <div class="badge badge-nebius">
+        <span class="status-dot dot-nebius"></span>
+        <span>Nebius Token Factory</span>
+      </div>
+      <div id="mode-badge" class="badge badge-mode">
+        <span class="status-dot dot-mode"></span>
+        <span id="mode-text">Checking Mode...</span>
+      </div>
     </div>
   </header>
+
+  <!-- Global Stepper Progress Bar -->
+  <section class="stepper-section">
+    <div class="stepper-container">
+      <div class="stepper-step active" id="step-node-1" data-step="1">
+        <div class="step-circle"><span class="step-num">1</span><span class="step-check">✓</span></div>
+        <div class="step-label">
+          <span class="step-title">AST Security Scan</span>
+          <span class="step-sub">Detect flaws</span>
+        </div>
+      </div>
+      <div class="step-line" id="line-1"></div>
+
+      <div class="stepper-step" id="step-node-2" data-step="2">
+        <div class="step-circle"><span class="step-num">2</span><span class="step-check">✓</span></div>
+        <div class="step-label">
+          <span class="step-title">Reproduction Test</span>
+          <span class="step-sub">Prove exploit</span>
+        </div>
+      </div>
+      <div class="step-line" id="line-2"></div>
+
+      <div class="stepper-step" id="step-node-3" data-step="3">
+        <div class="step-circle"><span class="step-num">3</span><span class="step-check">✓</span></div>
+        <div class="step-label">
+          <span class="step-title">Patch Synthesis</span>
+          <span class="step-sub">Generate fix</span>
+        </div>
+      </div>
+      <div class="step-line" id="line-3"></div>
+
+      <div class="stepper-step" id="step-node-4" data-step="4">
+        <div class="step-circle"><span class="step-num">4</span><span class="step-check">✓</span></div>
+        <div class="step-label">
+          <span class="step-title">Sandbox Verification</span>
+          <span class="step-sub">Pass assertions</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Main Container -->
   <main class="main-layout">
     <!-- Left Column: Code Input & Controls -->
     <section class="panel input-panel">
       <div class="panel-header">
-        <h2>Target Vulnerability</h2>
+        <div class="panel-title-group">
+          <h2>Target Vulnerability</h2>
+          <span class="badge-subtle" id="preset-cwe">CWE-89</span>
+        </div>
         <div class="presets">
-          <label>Sample:</label>
-          <select id="preset-selector">
-            <option value="sql_injection">SQL Injection (OWASP A03)</option>
-            <option value="eval_rce">Unsafe eval() RCE</option>
-            <option value="shell_injection">Shell Command Injection</option>
-            <option value="api_key">Hardcoded Secret</option>
+          <label for="preset-selector">Preset:</label>
+          <select id="preset-selector" class="custom-select">
+            <option value="sql_injection">SQL Injection (OWASP A03 / CWE-89)</option>
+            <option value="eval_rce">Unsafe eval() RCE (CWE-94)</option>
+            <option value="shell_injection">Shell Command Injection (CWE-78)</option>
+            <option value="api_key">Hardcoded Secret Leak (CWE-798)</option>
           </select>
+        </div>
+      </div>
+
+      <div class="editor-header-bar">
+        <span class="file-name">target.py</span>
+        <div class="editor-actions">
+          <span class="code-stats" id="code-stats">Line: 1 • Chars: 0</span>
+          <button id="clear-btn" class="btn-text" title="Clear Code">Clear</button>
+          <button id="copy-orig-btn" class="btn-text" title="Copy Code">Copy</button>
         </div>
       </div>
 
@@ -50,41 +120,73 @@
           <input type="text" id="task-desc" value="Audit security flaws, synthesize reproduction test, and generate verified patch.">
         </div>
         <div class="option-row checkboxes">
-          <label><input type="checkbox" id="auto-verify" checked> Run Sandbox Verification</label>
-          <span class="hw-note">Local Hardware: 8GB VRAM Safe (0% GPU pressure)</span>
+          <label class="custom-checkbox">
+            <input type="checkbox" id="auto-verify" checked>
+            <span class="checkmark"></span>
+            <span>Execute In-Memory Sandbox Verification</span>
+          </label>
+          <span class="hw-badge">⚡ 8GB VRAM Safe • 0% GPU Memory</span>
         </div>
       </div>
 
-      <button id="run-btn" class="btn btn-primary">
-        <span class="btn-icon">⚡</span> Run NemoGuard Agent
-      </button>
+      <div class="action-footer">
+        <button id="run-btn" class="btn btn-primary">
+          <span class="btn-icon">⚡</span>
+          <span class="btn-text-main">Launch NemoGuard Agent</span>
+        </button>
+      </div>
     </section>
 
     <!-- Right Column: Live Reasoning, Patch, and Verification -->
     <section class="panel output-panel">
       <!-- Tabs -->
       <div class="tabs">
-        <button class="tab-btn active" data-tab="timeline-tab">Agent Trajectory</button>
-        <button class="tab-btn" data-tab="patch-tab">Verified Patch Diff</button>
-        <button class="tab-btn" data-tab="verification-tab">Verification Proof</button>
-        <button class="tab-btn" data-tab="telemetry-tab">Nebius Telemetry</button>
+        <button class="tab-btn active" data-tab="timeline-tab">
+          <span class="tab-icon">🧠</span> Agent Trajectory
+        </button>
+        <button class="tab-btn" data-tab="patch-tab" id="tab-patch-btn">
+          <span class="tab-icon">🛠️</span> Verified Patch Diff
+        </button>
+        <button class="tab-btn" data-tab="verification-tab" id="tab-verif-btn">
+          <span class="tab-icon">🧪</span> Verification Proof
+        </button>
+        <button class="tab-btn" data-tab="telemetry-tab">
+          <span class="tab-icon">📊</span> Nebius Telemetry
+        </button>
       </div>
 
       <!-- Tab Content: Timeline -->
       <div id="timeline-tab" class="tab-content active">
         <div id="timeline-stream" class="timeline-stream">
           <div class="empty-state">
-            <div class="empty-icon">⏳</div>
-            <p>Ready to analyze. Click <strong>"Run NemoGuard Agent"</strong> to stream real-time NVIDIA Nemotron 70B reasoning.</p>
+            <div class="empty-icon-pulse">
+              <span class="empty-icon">⏳</span>
+            </div>
+            <h3>Ready for Analysis</h3>
+            <p>Click <strong>"Launch NemoGuard Agent"</strong> to stream real-time NVIDIA Nemotron-70B reasoning, tool calls, and automated verification.</p>
           </div>
         </div>
       </div>
 
       <!-- Tab Content: Patch Diff -->
       <div id="patch-tab" class="tab-content">
+        <div class="patch-toolbar">
+          <div class="diff-view-toggle">
+            <button id="view-unified-btn" class="btn-toggle active">Unified Diff</button>
+            <button id="view-split-btn" class="btn-toggle">Side-by-Side</button>
+          </div>
+          <div class="patch-actions">
+            <button id="copy-patch-code-btn" class="btn btn-secondary btn-sm">
+              <span>📋</span> Copy Remediated Code
+            </button>
+            <button id="download-patch-btn" class="btn btn-secondary btn-sm">
+              <span>📥</span> Download .patch File
+            </button>
+          </div>
+        </div>
         <div id="diff-container" class="diff-container">
           <div class="empty-state">
-            <p>No patch generated yet. Start an analysis to view unified diff.</p>
+            <p>No patch generated yet. Start an analysis to view verified code diff.</p>
           </div>
         </div>
       </div>
@@ -93,7 +195,7 @@
       <div id="verification-tab" class="tab-content">
         <div id="verification-card" class="verification-card">
           <div class="empty-state">
-            <p>No verification run yet. Sandboxed assertions will appear here.</p>
+            <p>No verification run yet. Sandboxed execution proofs will appear here.</p>
           </div>
         </div>
       </div>
@@ -102,25 +204,63 @@
       <div id="telemetry-tab" class="tab-content">
         <div class="telemetry-grid">
           <div class="telemetry-card">
-            <h3>NVIDIA Model</h3>
-            <p id="tel-model">nvidia/Llama-3.1-Nemotron-70B-Instruct-HF</p>
+            <div class="card-head">
+              <h3>NVIDIA Model</h3>
+              <span class="card-icon">🧠</span>
+            </div>
+            <p id="tel-model" class="telemetry-val">nvidia/Llama-3.1-Nemotron-70B-Instruct-HF</p>
+            <span class="card-sub">Architecture: 70B Parameter Open Reasoning</span>
           </div>
+
           <div class="telemetry-card">
-            <h3>Infrastructure</h3>
-            <p id="tel-infra">Nebius Token Factory</p>
+            <div class="card-head">
+              <h3>Cloud Infrastructure</h3>
+              <span class="card-icon">⚡</span>
+            </div>
+            <p id="tel-infra" class="telemetry-val">Nebius Token Factory</p>
+            <span class="card-sub">High-Throughput GPU API Inference</span>
           </div>
+
           <div class="telemetry-card">
-            <h3>Tokens Processed</h3>
-            <p id="tel-tokens">0 tokens</p>
+            <div class="card-head">
+              <h3>Tokens Processed</h3>
+              <span class="card-icon">🔢</span>
+            </div>
+            <p id="tel-tokens" class="telemetry-val">0 tokens</p>
+            <span class="card-sub" id="tel-token-rate">Rate: ~82.4 tokens/sec</span>
           </div>
+
           <div class="telemetry-card">
-            <h3>End-to-End Latency</h3>
-            <p id="tel-latency">0.00s</p>
+            <div class="card-head">
+              <h3>End-to-End Latency</h3>
+              <span class="card-icon">⏱️</span>
+            </div>
+            <p id="tel-latency" class="telemetry-val">0.00s</p>
+            <span class="card-sub">Round-trip Agent Decision Loop</span>
+          </div>
+
+          <div class="telemetry-card full-span">
+            <div class="card-head">
+              <h3>Hardware Memory Profile (Laptop Dev)</h3>
+              <span class="card-icon">💻</span>
+            </div>
+            <div class="memory-bar-wrapper">
+              <div class="memory-bar">
+                <div class="memory-used" style="width: 4%;"></div>
+              </div>
+              <div class="memory-labels">
+                <span>Local GPU Memory Pressure: <strong>0 MB / 8192 MB (0%)</strong></span>
+                <span class="hw-status-pill">100% Cloud / Mock Offload</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </main>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
 
   <script src="/static/js/app.js"></script>
 </body>

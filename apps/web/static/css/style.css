@@ -791,3 +791,286 @@ h1 {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
+
+/* Vulnerability Matrix Banner */
+.vuln-matrix-banner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1.2fr;
+  gap: 0.8rem;
+  padding: 0.75rem 1.4rem;
+  background: rgba(239, 68, 68, 0.06);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+  font-size: 0.78rem;
+}
+
+.matrix-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.matrix-label {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.matrix-val {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.severity-pill {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.pill-critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.pill-high {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+/* File Dropzone & Hint */
+.file-info-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.drop-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.panel.dragover {
+  border-color: var(--nvidia-green);
+  box-shadow: 0 0 25px var(--nvidia-glow);
+}
+
+/* Timeline Filter Toolbar */
+.timeline-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.filter-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+  border-color: var(--nvidia-green);
+  color: var(--text-primary);
+}
+
+.filter-pill.active {
+  background: rgba(118, 185, 0, 0.15);
+  border-color: var(--nvidia-green);
+  color: var(--nvidia-green);
+}
+
+/* Interactive Exploit Sandbox Box */
+.exploit-sandbox-box {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.sandbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.sandbox-header h4 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #7dd3fc;
+}
+
+.sandbox-badge {
+  font-size: 0.7rem;
+  background: rgba(0, 164, 228, 0.15);
+  color: var(--nebius-cyan);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.sandbox-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+}
+
+.sandbox-input-row {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.sandbox-input-row input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: #f87171;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 0.45rem 0.8rem;
+  outline: none;
+}
+
+.sandbox-input-row input:focus {
+  border-color: #f87171;
+}
+
+.exploit-result-console {
+  background: #05080c;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.console-line.vulnerable {
+  color: #f85149;
+}
+
+.console-line.secured {
+  color: #3fb950;
+}
+
+/* Comparative Benchmark Card */
+.benchmark-card {
+  background: linear-gradient(180deg, #162235 0%, #111a28 100%);
+  border-color: rgba(0, 164, 228, 0.3);
+}
+
+.benchmark-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--nebius-cyan);
+  background: rgba(0, 164, 228, 0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+}
+
+.benchmark-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.6rem;
+}
+
+.benchmark-item {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+}
+
+.benchmark-item.nebius {
+  border-color: rgba(118, 185, 0, 0.4);
+  background: rgba(118, 185, 0, 0.03);
+}
+
+.benchmark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.platform-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.status-fail {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #f85149;
+  background: rgba(248, 81, 73, 0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.status-pass {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--nvidia-green);
+  background: rgba(118, 185, 0, 0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.benchmark-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stat-num {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.benchmark-item.nebius .stat-num {
+  color: var(--nvidia-green);
+}
+
+.stat-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Button Accent */
+.btn-accent {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.btn-accent:hover {
+  background: rgba(168, 85, 247, 0.25);
+  color: #e9d5ff;
+}
